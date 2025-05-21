@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>練習「シャッフル02」</title>
+</head>
+
+<body>
+
+    <!-- 宣言された配列からli要素を生成するパターン。 -->
+
+    <button>シャッフル</button>
+    <ul>
+    </ul>
+    <script>
+        const ul = document.querySelector('ul');
+        const button = document.querySelector('button');
+        const words = ['りんご', 'ごりら', 'らっぱ', 'ぱんだ', 'だんご'];
+        word.array.forEach(element => {
+            const li = document.createElement('li');
+            li.textContent = element;
+            ul.append(li);
+        });
+
+        btn.addEventListener('click', () => {
+            shuffle(words);
+
+            ul.innerHTML = ''; // ulの中身を空に
+            words.forEach(text => {
+                const li = document.createElement('li');
+                li.textContent = text;
+                ul.append(li);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

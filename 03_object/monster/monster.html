@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クリックゲーム</title>
+    <style>
+        body {
+            /* color: #fff; */
+            /* height: 100vh; */
+            /* background: linear-gradient(45deg, #ffffff 0%, #a90000 50%, #2212aa 50%, #000000 100%); */
+            margin-top: 50px;
+            font-family: sans-serif, Arial, Helvetica;
+        }
+
+        .group {
+            margin: 200px;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+
+        /* dl {
+            text-align: center;
+        } */
+
+        dd {
+            margin: 0;
+        }
+
+        .name {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .level {
+            margin-bottom: 20px;
+        }
+
+        .levelNum {
+            font-weight: bold;
+            font-size: 25px;
+            color: #f00;
+        }
+
+        .pic {
+            cursor: pointer;
+            filter: drop-shadow(5px 5px 5px #ffffff);
+
+        }
+
+        .pic:hover {
+            width: 250px;
+            transition: .3s;
+            display: inline-block;
+            animation: hurueru .1s infinite;
+        }
+
+        @keyframes hurueru {
+            0% {
+                transform: translate(0px, 0px) rotateZ(0deg)
+            }
+
+            25% {
+                transform: translate(2px, 2px) rotateZ(1deg)
+            }
+
+            50% {
+                transform: translate(0px, 2px) rotateZ(0deg)
+            }
+
+            75% {
+                transform: translate(2px, 0px) rotateZ(-1deg)
+            }
+
+            100% {
+                transform: translate(0px, 0px) rotateZ(0deg)
+            }
+        }
+
+        /* p {
+            text-align: center;
+            animation: blinking .3s ease-in-out infinite alternate;
+            font-weight: bold;
+        }
+
+        @keyframes blinking {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        } */
+
+        .text {
+            color: yellow;
+        }
+
+        .hp {
+            margin-top: .5em;
+            font-style: oblique;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="group">
+        <!-- （モンスターの数）ー（倒した数） -->
+        <p class="result">残り４体</p>
+        <dl>
+            <dt class="name">名前</dt>
+            <dd class="level">Level:<span class="levelNum">0</span></dd>
+            <dd><img class="pic" src="./images/slime.png" alt="" width="200"></dd>
+            <dd class="hp">HP:0</dd>
+        </dl>
+        <!-- <p class="text">連打してモンスターを倒してネ！！</p> -->
+    </div>
+    <script>
+        const monsters = [
+            {
+                name: "スライム",
+                level: 50,
+                pic: "./images/slime.png",
+                hp: Math.floor(Math.random() * 5) + 3,
+            },
+            {
+                name: "目玉おばけ",
+                level: 80,
+                pic: "./images/eye.png",
+                hp: Math.floor(Math.random() * 5) + 3,
+            },
+            {
+                name: "半魚人",
+                level: 100,
+                pic: "./images/fish.png",
+                hp: Math.floor(Math.random() * 5) + 3,
+            },
+            {
+                name: "山の主",
+                level: 1000,
+                pic: "./images/kuroihito.png",
+                hp: Math.floor(Math.random() * 5) + 3,
+            },
+            {
+                name: "おとろしおじさん",
+                level: 10000,
+                pic: "./images/ojisan.png",
+                hp: Math.floor(Math.random() * 5) + 3,
+            },
+        ];
+
+        //各要素を指定
+        const nameEl = document.querySelector('.name');
+        const levelEl = document.querySelector('.levelNum');
+        const picEl = document.querySelector('.pic');
+        const hpEl = document.querySelector('.hp');
+        const resultEl = document.querySelector('.result');
+
+        //変数を先に定義
+        let currentHp = 0;
+        let currentMonster = 0;
+
+
+        resultEl.textContent = `残り:${monsters.length - currentMonster}体`;
+
+        const shuffle = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            };
+
+            return array;
+        };
+
+        // コピーを作ってシャッフル
+        // console.log(shuffle([...monsters]));
+        const shuffledMonsters = shuffle([...monsters]);      // console.log(monsters);
+
+        //値を反映
+        // 最初のモンスターの情報を入力
+        const setMonster = (monster) => {
+            nameEl.textContent = monster.name;
+            levelEl.textContent = monster.level;
+            picEl.src = monster.pic;
+            //変数に代入
+            currentHp = monster.hp;
+            //変数に変更
+            hpEl.textContent = `HP:${currentHp}`;
+        }
+
+        // 関数の実行
+        setMonster(shuffledMonsters[currentMonster]);
+
+        picEl.addEventListener('click', () => {
+            // currentHp--;
+            // hpEl.textContent = `HP:${currentHp}`;
+
+            // if文に変更
+
+            if (currentHp > 0) {
+                currentHp--;
+                hpEl.textContent = `HP:${currentHp}`;
+            } else {
+                currentMonster++;
+                // 関数の実行
+                // if文に変更
+                if (currentMonster >= shuffledMonsters.length) {
+                    alert('モンスターを全て倒しました‼おめでとうございます‼︎');
+                } else {
+                    setMonster(shuffledMonsters[currentMonster]);
+                    resultEl.textContent = `残り:${shuffledMonsters.length - currentMonster}体`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

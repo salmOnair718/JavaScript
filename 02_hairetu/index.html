@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配列の復習</title>
+</head>
+
+<body>
+
+    <script>
+        // 2-3練習
+        // 1. 以下の文字列を展開し、li要素のテキストとして表示する。
+        //（https:takagino.github.io/doc-js-advanced/02/complated/practice01.html）
+        // 2. filterメソッドを使用し、空白の値を取り除く。
+
+        const text = 'Hello World';
+        const textArray = [...text].filter(text => text !== ' '); // 空白を取り除く
+        // 空白じゃなかったら追加する
+        console.log(textArray);
+
+        const ul = document.querySelector('ul');
+        textArray.forEach((text) => {
+            const li = document.createElement('li');
+            li.textContent = text;
+            // 空白の場合は何もしない
+            ul.append(li);
+            console.log(li);
+        });
+
+
+
+        // const scores = [10, 20, 30];
+        // console.log(scores);
+        // console.log(scores[0]);
+        // console.log(scores.length);
+
+
+        // /* 値を代入
+        // --------------------*/
+        // scores[1] = 100;
+        // console.log(scores[1]);
+
+
+        // /* 最後の値を取得
+        // --------------------*/
+        // console.log(scores[scores.length - 1]);
+
+
+        // /* 値が入っていない要素は「undefined」
+        // --------------------*/
+        // console.log(scores[3]);
+
+
+        // // forとの組み合わせ
+        // for (let i = 0; i < scores.length; i++) {
+        //     console.log(scores[i]);
+        //     // 引数
+        // };
+
+        // // forEachとの組み合わせ
+        // // scores.foreach((score) => {
+        // //     console.log(score);
+        // // });
+
+        // scores.forEach((score, index) => {
+        //     console.log(`${index};${score}`);
+        // });
+
+
+
+
+
+
+
+
+        // // 配列の操作
+
+        // /* 末尾に追加
+        // --------------------*/
+        // scores.push(40, 50);
+
+
+        // /* 先頭に追加
+        // --------------------*/
+        // scores.unshift(-10, 0);
+
+
+        // /* 末尾の値を取得して削除
+        // --------------------*/
+        // scores.pop();
+
+
+        // /* 先頭の値を取得して削除
+        // --------------------*/
+        // scores.shift();
+
+
+        // /* 任意の場所に値を追加・削除する (開始位置, 長さ, 追加する値)
+        // 柔軟にできる！！
+        // 一個削除して60,70 を追加
+        // 1番目から1個削除して60,70を追加
+        // --------------------*/
+        // scores.splice(1, 1, 60, 70);
+
+
+        // /* 配列の全要素を順に連結した新しい文字列を返す
+        // 文字列に変換
+        // --------------------*/
+        // scores.join(' / ');
+
+
+        // /* 値のインデックス番号を取得する
+        // 単純
+        // 0から始まる
+        // 10は0番目,100は存在しないので「-1」
+        // --------------------*/
+        // scores.indexOf(10); // 0
+        // scores.indexOf(100); // 値が存在しない場合は「-1」
+
+
+        // /* 値が含まれるか調べる
+        // 単純
+        // true/falseで返す
+        // --------------------*/
+        // scores.includes(10); // true
+
+        // // 練習
+        // const scores2 = [10, 20, 30];
+        // scores2.splice(1, 0, 40, 50);
+        // scores2.push(60);
+        // console.log(scores2);
+
+        // const prices = [180, 190, 200];
+        // const updatePrices = prices.map((prices, index) => {
+        //     return prices + index;
+        // });
+        // console.log(updatePrices);
+        // // 減らすと容量が減るので動きも早くなる
+        // // 追加の処理を考える
+
+        // // mapメソッド
+
+        // // filterメソッド
+        // const numbers = [1, 4, 7, 8, 10];
+
+        // /* 偶数の値だけを取り出す
+        // --------------------*/
+        // const evenNumbers = numbers.filter(number => {
+        //     return number % 2 == 0;
+        // });
+
+        // console.log(evenNumbers);
+
+
+        // // 練習
+        // // 1. 1か100までの連番が入った配列を生成。
+        // for (let i = 1; i <= 100; i++) {
+        //     // numbers2.push(i);
+        // };
+
+        // // 2. 上記の配列から3の倍数の値だけを取り出した配列を生成。
+        // const numbers3 = numbers2.filter(number => {
+        //     return number % 3 == 0;
+        // });
+
+        // // 3. 上記の配列の値を2乗した値が入った配列を生成。
+        // // 2乗 number * number
+        // const powerNumbers = threeNumbers.map(number => {
+        //     Math.pow(number, 2);
+        //     return number * number;
+        // });
+        // const otherScores = [40, 50];
+        // // const scores = [10, 20, 30, ...otherScores];
+        // console.log(scores);
+
+        // const numbers2 = [1, 100];
+        // // const powerNumbers = numbers2.map(number => {
+        // //     return number * number;
+        // // });
+        // console.log(powerNumbers);
+
+
+        // // const text = 'Hello World';
+        // const textArray = [...text];
+        // console.log(textArray);
+
+
+    </script>
+</body>
+
+</html>

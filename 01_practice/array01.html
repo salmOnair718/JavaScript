@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>array01.html</title>
+</head>
+
+<body>
+    <button class="btn" id="aka">#f00</button>
+    <button class="btn" id="midori">#0f0</button>
+    <button class="btn" id="ao">#00f</button>
+
+    <script>
+        const redbtn = document.getElementById("#aka");
+        const greenbtn = document.getElementById("#midori");
+        const bluebtn = document.getElementById("#ao");
+
+        redbtn.addEventListener('click', () => {
+            document.body.style.backgroundColor = "red";
+        });
+        greenbtn.addEventListener('click', () => {
+            document.body.style.backgroundColor = "green";
+        });
+        bluebtn.addEventListener('click', () => {
+            document.body.style.backgroundColor = "blue";
+        });
+
+    </script>
+</body>
+
+</html>

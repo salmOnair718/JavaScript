@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ビンゴマシーン</title>
+
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+        }
+
+        .top {
+            height: 60px;
+            display: flex;
+        }
+
+        .red {
+            width: 50px;
+            background-color: red;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .yellow {
+            width: 50px;
+            background-color: yellow;
+            border-radius: 0 0 20px 20px;
+        }
+
+
+        h1 {
+            font-weight: 900;
+            font-size: 80px;
+            line-height: 0.8;
+
+            text-shadow: 0 0 5px #fcff45, 0 0 15px #aeff00, 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
+            color: #ffffff;
+            animation: blink 12s infinite;
+            -webkit-animation: blink 12s infinite;
+
+        }
+
+
+        .start {
+            background-color: rgb(67, 218, 190);
+            padding: 30px 15px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin: 5px;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .start:hover {
+            background-color: #fff;
+            padding: 30px 15px;
+            border-radius: 50%;
+            border: 2px solid rgb(67, 218, 190);
+            transition: .3s;
+            color: #000;
+        }
+
+        .stop {
+            background-color: rgb(201, 105, 105);
+            padding: 30px 20px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin: 5px;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .stop:hover {
+            background-color: #fff;
+            padding: 30px 20px;
+            border-radius: 50%;
+            border: 2px solid rgb(201, 105, 105);
+            transition: .3s;
+            color: #000;
+        }
+
+        .reset {
+            background-color: rgb(212, 227, 39);
+            padding: 30px 15px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin: 5px;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .reset:hover {
+            background-color: #fff;
+            padding: 30px 15px;
+            border-radius: 50%;
+            border: 2px solid rgb(212, 227, 39);
+            transition: .3s;
+            color: #000;
+        }
+
+        .result {
+            font-size: 100px;
+            line-height: 0;
+        }
+
+        .history {
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+    </div>
+
+    <h1>BINGO</h1>
+    <div class="wrapper">
+        <p class="result">0</p>
+        <div class="btn">
+            <button class="start">START</button>
+            <button class="stop">STOP</button>
+            <button class="reset">RESET</button>
+        </div>
+        <p class="history"></p>
+    </div>
+
+
+
+    <script>
+        // スタートボタン　クリックイベントを登録
+        // 要素を取得
+        const startBtn = document.querySelector('.start');
+        const stopBtn = document.querySelector('.stop');
+        const resetBtn = document.querySelector('.reset');
+        const resultEl = document.querySelector('.result')
+        const historyEl = document.querySelector('.history');
+
+        // 1から75の数字が入った配列を用意
+        // 検証しやすいように数字の個数を変数にする
+        // 本当は75だけど一旦10で検証する
+        const numbers = [];
+        let randomNumbers = [];
+        // const total = 10;
+        const total = 75;
+
+        // ランダムな数字が表示中かどうか
+        let isRunning = false;
+
+        // 過去の数字を保存する配列
+        let historyNumbers = [];
+
+        // 現在のインデックス
+        let currentIndex = 0;
+        let timerId = null;
+
+
+
+
+
+        for (let i = 1; i <= total; i++) {
+            numbers.push(i);
+        };
+        // console.log(numbers);
+
+        // シャッフルした別の配列を用意する
+        // 数字をシャッフルする関数を定義
+        const shuffle = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        };
+
+        // シャッフル
+        randomNumbers = shuffle([...numbers]);
+        // console.log(randomNumbers);
+
+
+        // 初期化関数
+        const resetState = () => {
+            isRunning = false;
+            currentIndex = 0;
+            clearInterval(timerId);
+
+            randomNumbers = shuffle([...numbers]);
+            historyNumbers = [];
+            resultEl.textContent = 0;
+            historyEl.textContent = '';
+        };
+
+        // ランダムな数字を表示する関数
+        const startRandom = () => {
+            if (!isRunning && randomNumbers.length > 0) {
+                isRunning = true;
+                // console.log("check");
+                // 既存のタイマーをクリア
+                clearInterval(timerId);
+
+                timerId = setInterval(() => {
+                    // スタートボタン　クリックイベントを登録
+                    // 要素を取得
+                    // console.log(currentIndex++);
+                    // currentIndex++;
+
+                    // 最後の値を表示したら、最初に戻す
+                    currentIndex = (currentIndex + 1) % randomNumbers.length;
+                    resultEl.textContent = randomNumbers[currentIndex];
+                    // 結果を表示
+                }, 30);
+            }
+        }
+
+        // ランダムな数字を停止するボタン
+        const stopRandom = () => {
+            // if文で囲む
+            // if (!isRunning && randomNumbers.length > 0) {
+            if (isRunning) {
+                isRunning = false;
+                // console.log("check");
+                clearInterval(timerId);
+
+                const [selected] = randomNumbers.splice(currentIndex, 1);
+                if (selected !== undefined) {
+                    historyNumbers.push(selected);
+                };
+
+                // 履歴用の配列の値をカンマ区切りですべて表示
+                historyEl.textContent = historyNumbers.join(',');
+                // 出た数字を配列から削除、履歴用の配列に入れる
+                currentIndex = 0;
+            }
+        }
+
+        startBtn.addEventListener('click', startRandom);
+        stopBtn.addEventListener('click', stopRandom);
+        resetBtn.addEventListener('click', resetState);
+
+        // 初期化
+        resetState();
+
+
+    </script>
+
+</body>

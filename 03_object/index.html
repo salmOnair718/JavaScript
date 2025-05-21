@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オブジェクトの復習</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+
+        //   「x座標とy座標を格納するための配列」の場合
+        const point01 = [100, 180];
+
+
+        // オブジェクトの形でわかりやすくする
+        const point02 = { x: 100, y: 180 };
+
+        // 改行を入れて見やすくする
+        const point03 = {
+            // このセットをプロパティという。
+            x: 100,
+            y: 180,
+        };
+
+        // 値の取得
+        console.log(point01.x); //ドット記法
+        console.log(point02['y']); //ブラケット記法（変数を使用可能）
+
+
+        // practice
+        const link = {
+            textContent: 'トライデント',
+            href: 'https://computer.trident.ac.jp',
+        };
+
+        const anchor = document.createElement('a');
+        anchor.textContent = link.textContent;
+        // anchor.href = link.href;
+        anchor.setAttribute('href', link.href);
+        document.body.append(anchor);
+
+
+        /* スプレッド構文
+    --------------------*/
+        const otherProps = {
+            z: 90,
+            color: 'red',
+        }
+
+        const point3d = {
+            x: 100,
+            y: 180,
+            ...otherProps,
+        };
+
+        console.log(point3d);
+
+
+        /* 分割代入（プロパティ名と同じ変数に代入）
+        --------------------*/
+        const { x, color, ...others } = point3d;
+
+        console.log(x);
+        console.log(color);
+        console.log(others);
+
+
+        const point = {
+            x: 100,
+            y: 180,
+            z: 90,
+        };
+
+        /* for文（iは数値なので、オブジェクトのプロパティにはアクセスできない）
+        --------------------*/
+        for (let i = 0; i < 3; i++) {
+            console.log(point01[i]);
+        }
+
+        /* foreach文（配列にしか使用できないためエラーとなる）
+        --------------------*/
+        point01.forEach((value, key) => {
+            console.log(key);
+            console.log(value);
+        });
+
+        for (const key in point) {
+            console.log(key);
+            console.log(point[key]);
+        }
+
+        console.log(Object.keys[point01]);
+        console.log(Object.values(point01));
+        console.log(Object.entries(point01));
+        // キーの名前がわかればキーを指定すれば値が取得できる
+
+
+        // 配列に変換してから繰り返し
+        Object.entries(point).forEach(([key, value]) => {
+            console.log(key);
+            console.log(value);
+        });
+
+
+        // practice
+        // 1. body内にtable要素を動的に追加する。
+        // 2. 下記のオブジェクトを使用し、営業時間表を作成する。
+        const timeTable = {
+            Sun: '定休日',
+            Mon: '10:00〜19:00',
+            Tue: '10:00〜19:00',
+            Wed: '10:00〜19:00',
+            Thu: '10:00〜19:00',
+            Fri: '10:00〜19:00',
+            Sat: '10:00〜14:00',
+        };
+
+        // apeend
+        // =要素以外も追加できる
+        // appendChild
+        // ＝限定的に追加
+        const table = document.createElement('table');
+        const trWeek = document.createElement('tr');
+        const trTime = document.createElement('tr');
+
+        for (const key in timeTable) {
+            const thDay = document.createElement('th');
+            thDay.textContent = key;
+            trWeek.appendChild(thDay);
+
+            const tdTime = document.createElement('td');
+            tdTime.textContent = timeTable[key];
+            trTime.appendChild(tdTime);
+        }
+
+        table.appendChild(trWeek);
+        table.appendChild(trTime);
+        document.body.appendChild(table);
+        // const timeTable = {
+        //     Sun: '定休日',
+        //     Mon: '10:00〜19:00',
+        //     Tue: '10:00〜19:00',
+        //     Wed: '10:00〜19:00',
+        //     Thu: '10:00〜19:00',
+        //     Fri: '10:00〜19:00',
+        //     Sat: '10:00〜14:00',
+        // };
+
+        // const tableEl = document.createElement('table');
+        // const firstTr = document.createElement('tr');
+        // const secondTr = document.createElement('tr');
+
+        // for (const key in timeTable) {
+        //     const thDay = document.createElement('th');
+        //     thDay.textContent = key;
+        //     firstTr.appendChild(thDay);
+
+        //     const secondTr = document.createElement('td');
+        //     secondTr.textContent = timeTable[key];
+        //     secondTr.appendChild(secondTr);
+        // }
+
+        // table.appendChild(firstTr);
+        // table.appendChild(secondTr);
+        // document.body.append(table);
+
+
+    </script>
+</body>
+
+</html>

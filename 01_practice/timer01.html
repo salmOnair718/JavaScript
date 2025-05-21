@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>timer01.html</title>
+</head>
+
+<body>
+    <button class="start">START</button>
+    <p class="result">0</p>
+    <script>
+        const start = document.querySelector('.start');
+        const result = document.querySelector('.result');
+        let time = 0;
+        let timer;
+
+        start.addEventListener('click', () => {
+            clearInterval(timer);
+
+            timer = setInterval(() => {
+                time++;
+                result.textContent = time;
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

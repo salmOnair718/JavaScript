@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0521 2-3
+
+    </title>
+</head>
+
+<body>
+    <script>
+        const teacher = [
+            {
+                name: "高木",
+                age: 42,
+                blood: "B"
+            },
+            {
+                name: "田中",
+                age: 35,
+                blood: "AB"
+            }
+        ];
+        console.log(teacher[1].name);
+
+        // 値を取り出す
+        // forEachとfor組み合わせる
+        teacher.forEach(item => {
+            for (const key in item) {
+                console.log(key, item[key]);
+            }
+        });
+
+
+        // ## for 文
+        // - インデックスを使いたいときや、一部だけ処理したいときに適している。
+        const fruit01 = ['apple', 'banana', 'orange'];
+
+        for (let i = 0; i < fruit01.length; i++) {
+            console.log(i, fruit01[i]); // インデックスも一緒に使える
+        }
+
+
+        // ## forEach()
+        // 一番使いやすい
+        // - 簡潔で読みやすいが、breakやreturnで途中終了はできない。
+        const fruit02 = ['apple', 'banana', 'orange'];
+
+        fruit02.forEach((fruit, index) => {
+            console.log(index, fruit);
+        });
+
+
+        // ## for...in
+        // オブジェクトのキーを列挙したいときに使う。
+        const person = { name: 'Taro', age: 20 };
+        for (const key in person) {
+            console.log(key, person[key]);
+        }
+
+        // デメリット！！＝＝＝＝インデックス番号の取得
+        const fruit03 = ['apple', 'banana', 'orange'];
+
+        for (const fruit in fruit03) {
+            console.log(fruit); //"0", "1", "2"（文字列）
+        }
+
+        // ## for...of
+        // - 値だけを順に取り出したいときに最適。breakやcontinueも使える。
+        const fruit04 = ['apple', 'banana', 'orange'];
+
+        for (const fruit of fruit04) {
+            console.log(fruit);
+        }
+
+        // /* インデックス番号の取得*/
+        for (const [index, fruit] of fruit04.entries()) {
+            console.log(index, fruit);
+        }
+
+        // /* オブジェクトのプロパティの取得
+        const point = {
+            x: 100,
+            y: 180,
+            z: 90,
+        };
+        for (const [key, value] of Object.entries(point)) {
+            console.log(key, value);
+        }
+
+        // /* 文字列の分割
+        const greeting = 'Hello';
+
+        for (const char of greeting) {
+            console.log(char);
+        };
+
+    </script>
+</body>
+
+</html>
