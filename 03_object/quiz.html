@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>漢字クイズ</title>
+</head>
+
+<body>
+    <p>以下の漢字の読みを答えてください。</p>
+    <h2 class="question"></h2>
+    <input type="text" class="answer" placeholder="答えを入力してください" />
+    <button class="submit">回答する</button>
+    <div class="result"></div>
+
+
+    <script>
+        const quizData = [
+            {
+                question: '凡例',
+                answer: 'はんれい',
+            },
+            {
+                question: '進捗',
+                answer: 'しんちょく',
+            },
+            {
+                question: '適宜',
+                answer: 'てきぎ',
+            },
+        ];
+
+
+        //表示する要素を取得
+        const questionEL = document.querySelector('.question');
+        const answerInput = document.querySelector('.answer');
+        const submitButton = document.querySelector('.submit');
+        const resultEL = document.querySelector('.result');
+
+        //現在何問目か判別するための変数
+        let currentQuiz = 0;
+        //スコアの変数
+        let score = 0;
+
+        //オブジェクトから1問目のデータを取得し、ブラウザに表示する
+        //以下の2行を関数化
+        // const currentQuizDate = quizDate[currentQuiz];
+        // questionEL.textContent = currentQuizDate.question;
+
+        const loadQuiz = () => {
+            //現在表示されている問題を消去する
+            questionEL.innerHTML = '';
+
+            const currentQuizData = quizData[currentQuiz];
+            questionEL.textContent = currentQuizData.question;
+        }
+
+        //回答ボタンにクリックイベントを登録
+        submitBtn.addEventListener('click', () => {
+            const userAnswer = answerInput.value.trim();
+            // trim() : 文字列の両端からホワイトスペースを取り除くメソッド
+            console.log(userAnswer);
+
+            //取得した値と正解を比較する
+            if (userAnswer === quizData[currentQuiz].answer) {
+                score++;
+                console.log('score');
+            }
+
+            //フォームの値を消去し、次の問題に進む
+            answerInput.value = '';
+            currentQuiz++;
+
+            if (currentQuiz < quizData.length) {
+                loadQuiz();
+            } else {
+                const resultText = document.createElemnet('h2');
+                resultText.textContent = 'あなたのスコアは${score}/${quizData.length}です。';
+                resultEl.append(resultText);
+
+                const restartBtn = document.createElement('button');
+                restartBtn.textContent = '再挑戦';
+                restartBtn.addEventListener('click', () => {
+                    resultEl.textContent = '';
+                    currentQuiz = 0;
+                    score = 0;
+                    loadQuiz();
+                });
+                resultEl.append(restartBtn);
+            }
+        });
+
+        //ページ読み込み時に一度関数を実行する
+        loadQuiz();
+
+
+
+
+    </script>
+</body>
+
+</html>
