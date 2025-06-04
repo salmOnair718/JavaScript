@@ -144,6 +144,32 @@
 
         // 4. その値を2乗して、小数点で切り捨てる。
         console.log(Math.pow(avg2, 2));
+
+        // 3. 日時の操作
+        // 3 - 1. 基本操作
+        const d = new Date();
+        console.log(d);
+
+        // 3 - 2. 特定の日時を取得
+        const e = new Date(1981, 0); // 1981/01/01 00:00:00
+        console.log(e);
+
+        e.setHours(10, 20, 30); // 時間を変更する（1981/01/01 10:20:30）
+
+        e.setDate(32); // 日時を変更する（1981/02/01 10:20:30）※範囲を超えると自動的に計算される
+
+        e.setDate(e.getDate() + 3); // 今の日時の何日後（1981/02/04 10:20:30）
+
+        // 3 - 3. 経過時間を取得
+        let nowTime;
+        let previousTime = Date.now();
+
+        window.addEventListener('click', () => {
+            nowTime = Date.now();
+            // 経過時間をミリ秒で取得
+            console.log(`nowTime-previousTime`);
+            previousTime = nowTime; // 前回の時間を更新
+        });
     </script>
 </body>
 
