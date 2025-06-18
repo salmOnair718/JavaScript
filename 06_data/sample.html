@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie</title>
+</head>
+<body>
+  <button id="save">保存</button>
+  <button id="get">取得</button>
+  <button id="delete">削除</button>
+
+  <script>
+    const save = document.querySelector("#save");
+    const get = document.querySelector("#get");
+    const del = document.querySelector("#delete");
+
+    // Cookieを保存
+    // 時間を０で上書きする
+save.addEventListener('click',()=>{
+    document.cookie="text=クッキー;path=/;max-age=10";
+});
+
+// cookieを取得
+get.addEventListener('click',()=>{
+    alert(document.cookie);
+});
+
+// cookieを削除
+// 「text」の値を空、「max-age」の値を0にして、Cookieを書き込む
+del.addEventListener('click',()=>{
+    document.cookie="text=;path/;max-age=1000";
+});
+// or
+let now =new Data();
+now.setMinutes(now.getMinutes()-1);
+// 1分前に設定（過去の日時）
+document.cookie=`text=;path/;expires=${now.toUTCString()};`;
+
+
+// 「=」以降の値だけ取得する
+// 指定されたキーのクッキーの値を取得する関数
+const getCookieValue=(key)=>{
+    const cookies=document.cookie.split(';');
+     // クッキーを「;」で分割して配列に
+    for(const cookie of cookies){
+        // 各クッキーを1つずつ処理
+        const [k,...rest]=cookie.split('=');
+        // 最初の要素をキー、残りを値として分割
+            if(k.trim()===key.trim()){
+                // キーが一致すれば
+                return rest.join('=');
+                // 値を「=」で結合して返す（値に=が含まれても対応）
+            }
+            console.log(cookies);
+    }
+    return null;
+    // 一致するクッキーがなければ null を返す
+}
+getCookieValue('text');
+
+get.addEventListener('click',()=>{
+    const value=getCookieValue('text');
+    // 「text」という名前のクッキーの値を取得
+    alert(value !== null ? value :'クッキーは存在しません');
+    // 値があれば表示、なければメッセージ
+})
+</script>
+</body>
+</html>
