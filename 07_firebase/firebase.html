@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase</title>
+</head>
+<body>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+
+        // 全体の命令
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        // forestoreのみの命令
+        import { getFirestore, collection, doc, getDoc, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/11.9.1//firebase-firestore.js';
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyD7B6Mthv0eZAr6YLSqJhDhr5p7kDSsbx4",
+          authDomain: "test-bc58c.firebaseapp.com",
+          projectId: "test-bc58c",
+          storageBucket: "test-bc58c.firebasestorage.app",
+          messagingSenderId: "783801949920",
+          appId: "1:783801949920:web:c37a38f9556aa7892c3a85"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        console.log(app);
+
+        const colRef = collection(db, "users");
+getDocs(colRef)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+        const docRef = doc(db, 'users', 'takagi');
+        getDoc(docRef)
+	.then((snapshot) => {
+	  if (snapshot.exists()) {
+	    console.log(snapshot.data());
+    } else {
+	    console.log('No such document!');
+    }
+  })
+  .catch((error) => {
+	  console.error(error);
+  });
+
+//   条件で絞り込む
+  const myQuery = query(collection(db, 'users'), where('blood', '==', 'A'));
+
+getDocs(myQuery)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+// console.log(docRef);
+// console.log(colRef);
+      </script>
+
+</body>
+</html>
