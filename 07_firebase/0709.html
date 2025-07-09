@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firebase</title>
+</head>
+
+<body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            getDoc,
+            getDocs,
+            query,
+            where,
+            orderBy,
+            limit,
+            deleteDoc ,
+            setDoc ,
+            addDoc,
+            serverTimestamp }from 'https://www.gstatic.com/firebasejs/11.9.1//firebase-firestore.js';
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyD7B6Mthv0eZAr6YLSqJhDhr5p7kDSsbx4",
+        authDomain: "test-bc58c.firebaseapp.com",
+        projectId: "test-bc58c",
+        storageBucket: "test-bc58c.firebasestorage.app",
+        messagingSenderId: "783801949920",
+        appId: "1:783801949920:web:c37a38f9556aa7892c3a85"
+        };
+        const app = initializeApp(firebaseConfig);
+
+        const db = getFirestore(app);
+
+
+        // コレクションの取得collection
+        // ドキュメントの取得doc
+const colRef = collection(db, "users");
+const docRef = doc(colRef, "takagi");
+console.log(colRef);
+
+// フィールドの値の取得getdoc
+getDoc(docRef)
+	.then((snapshot) => {
+	  if (snapshot.exists()) {
+	    console.log(snapshot.data());
+    } else {
+	    console.log('No such document!');
+    }
+  })
+  .catch((error) => {
+	  console.error(error);
+  });
+
+//   すべてのドキュメントの取得getdocs
+  getDocs(colRef)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+    // 条件で絞り込むquery,where
+    // const myQuery = query(collection(db, 'users'), where('blood', '==', 'A'));
+
+    const myQuery = query(collection(db, 'users'), orderBy('blood', 'desc')); //asc:昇順、desc:降順
+
+getDocs(myQuery)
+getDocs(myQuery)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+    // データを並び替えるorderby
+getDocs(myQuery)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+    // 取得するデータの数を指定limit
+    getDocs(myQuery)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+    // ドキュメント名を指定して削除deleteDoc
+    deleteDoc(doc(db, 'users', 'suzuki'))
+	.then(() => {
+	  console.log('Document deleted successfully');
+  })
+  .catch((error) => {
+	  console.error(error);
+  });
+
+//   全てのドキュメントを削除
+//   getDocs(colRef)
+// 	.then((snapshot) => {
+// 		snapshot.forEach((doc) => {
+// 			deleteDoc(doc.ref);
+// 		});
+// 	})
+// 	.catch((error) => {
+// 		console.error(error);
+// 	});
+
+// ドキュメントの作成setdoc
+const myDoc = doc(db, 'users', 'suzuki');
+const data = {
+	blood: 'A',
+};
+
+setDoc(myDoc, data)
+	.then(() => {
+		console.log('Document written successfully');
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+    // ランダムなIDで追加adddoc
+    // 追加した日時を記録serverTimestamp
+    addDoc(collection(db, 'users'), {
+	timestamp: serverTimestamp(), // タイムスタンプ
+	number: Math.floor(Math.random() * 100),
+});
+
+
+getDocs(myQuery)
+	.then((snapshot) => {
+		snapshot.forEach((doc) => {
+			const d = new Date(doc.data().timestamp.seconds * 1000);
+			const formattedDate = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+      console.log(formattedDate);
+    });
+  })
+	.catch((error) => {
+		console.error(error);
+	});
+
+
+
+ </script>
+</body>
+
+</html>
