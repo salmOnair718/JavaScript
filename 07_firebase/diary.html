@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日記</title>
+    <style>
+      body {
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #diary-entry {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      #diary-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      #diary-list li {
+        background-color: #f0f0f0;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      button:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>日記</h1>
+      <textarea id="diary-entry" rows="10" placeholder="今日の出来事を記入..."></textarea>
+      <button id="submit-button" type="submit" disabled>保存</button>
+      <ul id="diary-list"></ul>
+    </div>
+
+
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+
+    //   使用するメソッド
+      import {
+         getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+        query,
+        orderBy,
+        getDocs } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+
+			// 自分の情報に変更
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7B6Mthv0eZAr6YLSqJhDhr5p7kDSsbx4",
+    authDomain: "test-bc58c.firebaseapp.com",
+    projectId: "test-bc58c",
+    storageBucket: "test-bc58c.firebasestorage.app",
+    messagingSenderId: "783801949920",
+    appId: "1:783801949920:web:c37a38f9556aa7892c3a85"
+  };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // DOM要素の取得
+const diaryEntry = document.getElementById('diary-entry');
+const submitButton = document.getElementById('submit-button');
+const diaryList = document.getElementById('diary-list');
+
+// 入力があるかチェックしてボタンを制御
+diaryEntry.addEventListener('input', () => {
+	submitButton.disabled = diaryEntry.value.trim() === '';
+});
+
+// ボタンがクリックされたときの処理
+submitButton.addEventListener('click', () => {
+	const entry = diaryEntry.value.trim();
+    	// 早期リターン
+	if (!entry) return;
+
+    // li要素の生成＆追加
+    const li = document.createElement('li');
+	li.textContent = entry;
+	diaryList.insertBefore(li, diaryList.firstChild); // 先頭に追加する
+	diaryEntry.value = '';
+	submitButton.disabled = true;
+
+    // データを追加
+    // データの追加完了時にブラウザに表示
+	addDoc(collection(db, 'entries'), {
+	  content: entry,
+	  timestamp: serverTimestamp(),
+  })
+		.then(() => {
+	//     const li = document.createElement('li');
+	//     li.textContent = entry;
+    //   diaryList.insertBefore(li, diaryList.firstChild);
+    loadEntries();
+      diaryEntry.value = '';
+      submitButton.disabled = true;
+    })
+    .catch((error) => {
+	    console.error(error);
+    });
+
+    // 初期データの取得
+    // 投稿を読み込む関数を定義
+const loadEntries = () => {
+    diaryList.innerHTML = '';
+	const myQuery = query(collection(db, 'entries'), orderBy('timestamp', 'desc'), limit(5));
+
+	getDocs(myQuery)
+		.then((snapshot) => {
+			if (snapshot.empty) return;
+
+			snapshot.forEach((doc) => {
+                const d = new Date(doc.data().timestamp.seconds * 1000);
+				const formattedDate = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+				console.log(formattedDate);
+
+                const li = document.createElement('li');
+                li.innerHTML = `<dl><dt>${formattedDate}</dt><dd>${doc.data().content}</dd></dl>`;
+
+	    //   diaryList.append(li, diaryList.firstChild);
+        diaryList.appendChild(li);
+			});
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+};
+
+
+
+// ページ読み込み時に初期データを取得
+loadEntries();
+});
+
+    </script>
+
+  </body>
+</html>
