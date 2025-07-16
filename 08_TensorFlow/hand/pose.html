@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ポーズモデル</title>
+
+    <style>
+        body{
+        background-color: sandybrown;
+    font-family:Helvetica,  Arial, sans-serif;
+    font-weight: bold;
+}
+    </style>
+  </head>
+
+  <body>
+
+   <div>Teachable Machine Image Model</div>
+<button type="button" onclick="init()">Start</button>
+<div id="webcam-container"></div>
+<div id="label-container"></div>
+
+<div>
+	<img id="hero" src="./salmon.jpeg" alt="" width="200" style="position: relative; left: 0px" />
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+    const URL = "./my_model/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+
+// 変数の定義,要素の取得
+let heroPosition = 0; // 現在の位置（ピクセル単位）
+const moveStep = 10; //動かす間隔
+const hero = document.getElementById('hero');
+
+    async function predict() {
+        // const prediction = await model.predict(webcam.canvas);
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+	    const prediction = await model.predict(posenetOutput);
+
+        for (let i = 0; i < maxPredictions; i++) {
+            // 値を変数に代入
+            const className = prediction[i].className;
+        const probability = prediction[i].probability;
+
+   	    const classPrediction = className + ': ' + probability.toFixed(2);
+	    labelContainer.childNodes[i].innerHTML = classPrediction;
+
+	    // 値が0.9以上の時はtrue
+	     if (probability > 0.9) {
+		  if (className === '左手') {
+	      heroPosition -= moveStep;
+        } else if (className === '右手') {
+	    heroPosition += moveStep;
+         }
+
+    }
+    }
+    	hero.style.left = heroPosition + 'px';
+    drawPose(pose);
+
+    }
+
+
+</script>
+
+  </body>
+</html>
